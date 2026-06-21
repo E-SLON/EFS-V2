@@ -160,6 +160,9 @@ This repository is now configured for a combined Vercel deployment with a static
    - `FRONTEND_URL` (optional, your Vercel domain)
 4. Deploy the project.
 
+### Vercel config note
+This project uses a Vercel config file compatible with the older Vercel platform version 2 because your import flow rejected `version: 3`.
+
 ### Expected Vercel behavior
 - The static website is served from `/` via the `frontend/` folder.
 - The backend API is served from `/api/*`.
