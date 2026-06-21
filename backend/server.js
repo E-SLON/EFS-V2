@@ -23,11 +23,12 @@ app.use('/api/', limiter);
 // ── CORS ──────────────────────────────────────────────────────────
 const allowedOrigins = [
   process.env.FRONTEND_URL,
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null,
   'http://localhost:3000',
   'http://localhost:5000',
   'http://127.0.0.1:5500',
   'http://127.0.0.1:5000'
-];
+].filter(Boolean);
 app.use(cors({
   origin: (origin, cb) => (!origin || allowedOrigins.includes(origin)) ? cb(null, true) : cb(new Error('Not allowed by CORS')),
   credentials: true
