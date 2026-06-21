@@ -51,7 +51,8 @@ app.get('/api/health', (req, res) => {
 });
 
 // ── CATCH-ALL SPA ─────────────────────────────────────────────────
-app.get('*', (req, res) => {
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) return next();
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
@@ -67,13 +68,13 @@ const connectDB = async () => {
   console.log('✅ Connected to MongoDB');
 };
 
-if (process.env.NODE_ENV !== 'test') {
+if (require.main === module) {
   connectDB()
     .then(() => {
       const PORT = process.env.PORT || 5000;
       app.listen(PORT, () => {
         console.log(`🚀 EFS Server running on port ${PORT}`);
-        console.log(`🌍 Mode: ${process.env.NODE_ENV}`);
+        console.log(`🌍 Mode: ${process.env.NODE_ENV || 'development'}`);
       });
     })
     .catch(err => { console.error('❌ MongoDB failed:', err.message); process.exit(1); });

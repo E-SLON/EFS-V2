@@ -1,0 +1,12 @@
+{
+  "name": "efs-website-v2",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": ["backend"],
+  "scripts": {
+    "dev": "npm --prefix backend run dev"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}

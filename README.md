@@ -137,7 +137,47 @@ Go to your GitHub repo → Settings → Secrets and Variables → Actions → Ne
 - Value: your Render deploy hook URL (see Hosting section below)
 
 ---
+## HOSTING ON VERCEL
+This repository is now configured for a combined Vercel deployment with a static frontend and a Node API backend.
 
+### What was added
+- `vercel.json` → routes `/api/*` to the backend serverless entrypoint and serves static frontend files from `frontend/`
+- `api/index.js` → Vercel Node function that loads the existing backend app and connects to MongoDB safely
+- `package.json` at repo root → enables npm workspace installation for the `backend` package
+- `.env.example` at repo root → environment variable template for local and Vercel deployment
+
+### Vercel deployment steps
+1. Push this repo to GitHub.
+2. Open Vercel and import the GitHub repository.
+3. In Vercel Project Settings → Environment Variables, add:
+   - `MONGODB_URI`
+   - `JWT_SECRET`
+   - `JWT_EXPIRES_IN` (recommended: `8h`)
+   - `ADMIN_PASSWORD`
+   - `EMAIL_USER` (optional, for order emails)
+   - `EMAIL_PASS` (optional, for order emails)
+   - `OWNER_EMAIL` (optional, for order emails)
+   - `FRONTEND_URL` (optional, your Vercel domain)
+4. Deploy the project.
+
+### Expected Vercel behavior
+- The static website is served from `/` via the `frontend/` folder.
+- The backend API is served from `/api/*`.
+- The frontend already points to `/api` in production, so it will call the backend automatically when deployed on the same domain.
+
+### Local development after this update
+```bash
+npm install
+npm --prefix backend install
+npm --prefix backend run dev
+```
+If you want to preview the full stack locally with Vercel CLI, install Vercel and run:
+```bash
+npm install -g vercel
+vercel dev
+```
+
+---
 ## HOSTING ON RENDER (FREE)
 
 ### Step 1 — Sign up
